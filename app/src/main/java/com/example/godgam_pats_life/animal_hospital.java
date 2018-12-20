@@ -2,14 +2,17 @@ package com.example.godgam_pats_life;
 
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class animal_hospital extends ListActivity {
@@ -24,7 +27,6 @@ public class animal_hospital extends ListActivity {
     protected void onResume() {
         super.onResume();
         loadDB();
-
     }
     public void onClickButton(View v){
         EditText editText = (EditText)findViewById(R.id.list_editText);
@@ -57,21 +59,37 @@ public class animal_hospital extends ListActivity {
         db.execSQL("CREATE TABLE IF NOT EXISTS hospital "
                 + "(_id INTEGER PRIMARY KEY AUTOINCREMENT,cname INTEGER not null unique, name TEXT, age INTEGER);");
 
-        Cursor c = db.rawQuery("SELECT * FROM hospital;", null);
+        final Cursor c = db.rawQuery("SELECT * FROM hospital;", null);
         startManagingCursor(c);
 
-        ListAdapter adapt = new SimpleCursorAdapter(
+        SimpleCursorAdapter adapt = new SimpleCursorAdapter(
                 this,
                 R.layout.hospital_item,
                 c,
                 new String[]{"name","new_address"},
                 new int[]{R.id.textTitle ,R.id.textDate});
+        ListView Iv = (ListView) findViewById(android.R.id.list);
+        Iv.setAdapter(adapt);
+        Iv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                // TODO Auto-generated method stub
 
-        setListAdapter(adapt);
 
-        if(db != null){
-            db.close();
-        }
+                Intent intent = new Intent(animal_hospital.this, Detail_View.class);
+                intent.putExtra("a", c.getString(c.getColumnIndex("_id")));
+                intent.putExtra("b", c.getString(c.getColumnIndex("name")));
+                intent.putExtra("c", c.getString(c.getColumnIndex("new_address")));
+                intent.putExtra("d", c.getString(c.getColumnIndex("address")));
+                intent.putExtra("e", c.getString(c.getColumnIndex("(X)")));
+                intent.putExtra("f", c.getString(c.getColumnIndex("(Y)")));
+
+                startActivity(intent);
+
+
+            }
+        });
     }
 }
 

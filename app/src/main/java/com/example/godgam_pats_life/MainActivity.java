@@ -20,5 +20,4 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this,animal_hospital.class);
         startActivity(i);
     }
-
 }
