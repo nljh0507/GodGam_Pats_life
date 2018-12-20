@@ -20,4 +20,12 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this,animal_hospital.class);
         startActivity(i);
     }
+    public void OnclickButton1(View view){
+        Intent i = new Intent (this,animal_sales.class);
+        startActivity(i);
+    }
+    public void OnclickButton2(View view){
+        Intent i = new Intent (this,animal_death.class);
+        startActivity(i);
+    }
 }
